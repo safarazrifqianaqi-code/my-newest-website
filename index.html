@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=9ec5cdde-3bd8-43af-b4b4-38a8ca4c308a
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+        <title>Rekap Nilai</title>
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script defer src="script.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h2 class="text-center">Rekap Nilai Siswa</h2>
+            <!-- FORM -->
+            <div class="card p-3 mt-3" id="form">
+                <input id="nama" class="form-control mb-2" placeholder="Nama">
+                <div class="row">
+                    <div class="col"><input id="uh1" class="form-control" placeholder="UH1"></div>
+                    <div class="col"><input id="uh2" class="form-control" placeholder="UH2"></div>
+                    <div class="col"><input id="uh3" class="form-control" placeholder="UH3"></div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col"><input id="uts" class="form-control" placeholder="UTS"></div>
+                    <div class="col"><input id="uas" class="form-control" placeholder="UAS"></div>
+                </div>
+                <button type="button" id="btnHitung" class="btn btn-primary mt-3">
+                    Hitung
+                </button>
+            </div>
+            <!-- HASIL -->
+            <div class="card p-3 mt-3" id="hasil">
+                <p id="data">Belum ada data</p>
+            </div>
+            <!-- TABEL -->
+            <table class="table mt-3" id="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nama</th>
+                        <th>Rata-rata</th>
+                        <th>Grade</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelData"></tbody>
+            </table>
+        </div>
+    </body>
+</html>

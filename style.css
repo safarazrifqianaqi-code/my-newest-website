@@ -1,0 +1,372 @@
+
+/* =========================
+   1. GLOBAL
+========================= */
+:root {
+    --bg: #0b1120;
+    --surface: #151f33;
+    --surface-light: #1d2a42;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --text: #e5edf9;
+    --muted: #94a3b8;
+    --border: rgba(148, 163, 184, 0.18);
+    --success: #34d399;
+    --warning: #fbbf24;
+    --danger: #fb7185;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+    min-height: 100vh;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(59, 130, 246, 0.15),
+            transparent 35%
+        ),
+        linear-gradient(135deg, #0b1120, #172338);
+}
+
+/* =========================
+   2. LAYOUT
+========================= */
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin: 0 0 30px;
+    text-align: center;
+    font-size: clamp(25px, 4vw, 36px);
+    font-weight: 750;
+    letter-spacing: -0.8px;
+    color: #f8fafc;
+    animation: fadeDown 0.6s ease both;
+}
+
+h1::after {
+    content: "";
+    display: block;
+    width: 65px;
+    height: 4px;
+    margin: 12px auto 0;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #60a5fa, #818cf8);
+}
+
+/* =========================
+   3. FORM CARD
+========================= */
+form,
+.form-card {
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(21, 31, 51, 0.88);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.25s ease;
+}
+
+form:hover,
+.form-card:hover {
+    border-color: rgba(96, 165, 250, 0.4);
+}
+
+/* Form input */
+input,
+select {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 15px;
+    border: 1px solid #334155;
+    border-radius: 9px;
+    outline: none;
+    background: #0f192b;
+    color: var(--text);
+    font: inherit;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+input::placeholder {
+    color: #94a3b8;
+}
+
+input:hover,
+select:hover {
+    border-color: #64748b;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    background: #111e33;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
+}
+
+/* =========================
+   4. INPUT GRID
+========================= */
+/* Tambahkan class input-grid pada pembungkus input
+   jika ingin memakai grid otomatis. */
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.input-grid .nama {
+    grid-column: span 6;
+}
+
+.input-grid .ulangan {
+    grid-column: span 2;
+}
+
+.input-grid .ujian {
+    grid-column: span 3;
+}
+
+/* =========================
+   5. BUTTON
+========================= */
+button {
+    width: 100%;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.28);
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: translateY(0) scale(0.99);
+}
+
+button:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* =========================
+   6. SUMMARY / EMPTY STATE
+========================= */
+#hasil,
+#empty-state,
+.summary {
+    margin: 18px 0;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: var(--surface);
+    color: var(--muted);
+}
+
+#hasil:empty {
+    display: none;
+}
+
+/* =========================
+   7. TABLE
+========================= */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+thead {
+    background: #202d43;
+}
+
+th,
+td {
+    padding: 15px 18px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+th {
+    color: #f8fafc;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+td {
+    color: #dbe5f3;
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: background 0.2s ease;
+    animation: fadeUp 0.35s ease both;
+}
+
+tbody tr:hover {
+    background: rgba(59, 130, 246, 0.08);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* =========================
+   8. GRADE BADGES
+========================= */
+.grade {
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 7px;
+    font-weight: 750;
+    font-size: 12px;
+}
+
+.grade-a {
+    color: #6ee7b7;
+    background: rgba(16, 185, 129, 0.13);
+}
+
+.grade-b {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.13);
+}
+
+.grade-c {
+    color: #fde68a;
+    background: rgba(245, 158, 11, 0.13);
+}
+
+.grade-d {
+    color: #fda4af;
+    background: rgba(244, 63, 94, 0.13);
+}
+
+/* =========================
+   9. ACTION BUTTONS
+========================= */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.action-buttons button {
+    width: auto;
+    padding: 7px 11px;
+    font-size: 12px;
+}
+
+.btn-edit {
+    background: #334155;
+}
+
+.btn-delete {
+    background: #be123c;
+}
+
+/* =========================
+   10. ANIMATION
+========================= */
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =========================
+   11. RESPONSIVE
+========================= */
+@media (max-width: 700px) {
+    body {
+        padding: 28px 14px;
+    }
+
+    form,
+    .form-card {
+        padding: 16px;
+    }
+
+    .input-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .input-grid .nama {
+        grid-column: span 2;
+    }
+
+    .input-grid .ulangan,
+    .input-grid .ujian {
+        grid-column: span 1;
+    }
+
+    th,
+    td {
+        padding: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
