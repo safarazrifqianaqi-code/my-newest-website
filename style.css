@@ -1,372 +1,175 @@
-
-/* =========================
-   1. GLOBAL
-========================= */
-:root {
-    --bg: #0b1120;
-    --surface: #151f33;
-    --surface-light: #1d2a42;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --text: #e5edf9;
-    --muted: #94a3b8;
-    --border: rgba(148, 163, 184, 0.18);
-    --success: #34d399;
-    --warning: #fbbf24;
-    --danger: #fb7185;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
 body {
-    margin: 0;
-    padding: 40px 20px;
-    min-height: 100vh;
-    font-family: "Segoe UI", Arial, sans-serif;
-    color: var(--text);
-    background:
-        radial-gradient(
-            circle at top left,
-            rgba(59, 130, 246, 0.15),
-            transparent 35%
-        ),
-        linear-gradient(135deg, #0b1120, #172338);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Diubah ke 100vh agar menutup penuh layar */
+  background: linear-gradient(to bottom, #0f172a 0%, #1e293b 100%);
+  background-attachment: fixed;
 }
 
-/* =========================
-   2. LAYOUT
-========================= */
-.container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
+footer {
+  background: transparent;
 }
 
-h1 {
-    margin: 0 0 30px;
-    text-align: center;
-    font-size: clamp(25px, 4vw, 36px);
-    font-weight: 750;
-    letter-spacing: -0.8px;
-    color: #f8fafc;
-    animation: fadeDown 0.6s ease both;
+h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-h1::after {
-    content: "";
-    display: block;
-    width: 65px;
-    height: 4px;
-    margin: 12px auto 0;
-    border-radius: 10px;
-    background: linear-gradient(90deg, #60a5fa, #818cf8);
-}
-
-/* =========================
-   3. FORM CARD
-========================= */
-form,
-.form-card {
-    padding: 24px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: rgba(21, 31, 51, 0.88);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    transition: border-color 0.25s ease;
-}
-
-form:hover,
-.form-card:hover {
-    border-color: rgba(96, 165, 250, 0.4);
-}
-
-/* Form input */
-input,
-select {
-    width: 100%;
-    min-width: 0;
-    padding: 13px 15px;
-    border: 1px solid #334155;
-    border-radius: 9px;
-    outline: none;
-    background: #0f192b;
-    color: var(--text);
-    font: inherit;
-    transition:
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease;
-}
-
-input::placeholder {
-    color: #94a3b8;
-}
-
-input:hover,
-select:hover {
-    border-color: #64748b;
-}
-
-input:focus,
-select:focus {
-    border-color: var(--primary);
-    background: #111e33;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
-}
-
-/* =========================
-   4. INPUT GRID
-========================= */
-/* Tambahkan class input-grid pada pembungkus input
-   jika ingin memakai grid otomatis. */
-
-.input-grid {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 12px;
-}
-
-.input-grid .nama {
-    grid-column: span 6;
-}
-
-.input-grid .ulangan {
-    grid-column: span 2;
-}
-
-.input-grid .ujian {
-    grid-column: span 3;
-}
-
-/* =========================
-   5. BUTTON
-========================= */
-button {
-    width: 100%;
-    padding: 13px 18px;
-    border: none;
-    border-radius: 9px;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    font: inherit;
-    font-weight: 650;
-    cursor: pointer;
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        filter 0.2s ease;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.28);
-    filter: brightness(1.1);
-}
-
-button:active {
-    transform: translateY(0) scale(0.99);
-}
-
-button:focus-visible {
-    outline: 3px solid #93c5fd;
-    outline-offset: 3px;
-}
-
-/* =========================
-   6. SUMMARY / EMPTY STATE
-========================= */
-#hasil,
-#empty-state,
-.summary {
-    margin: 18px 0;
-    padding: 20px;
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    background: var(--surface);
-    color: var(--muted);
-}
-
-#hasil:empty {
-    display: none;
-}
-
-/* =========================
-   7. TABLE
-========================= */
-.table-wrapper {
-    overflow-x: auto;
-    margin-top: 20px;
-    border: 1px solid var(--border);
+#form {
+    /* 1. Mengubah warna form menjadi sedikit lebih terang dari background */
+    background-color: #1e2640 !important; 
+    
     border-radius: 12px;
-    background: var(--surface);
+    
+    /* 2. Menambahkan garis tepi (border) tipis semi-transparan sebagai pembatas tegas */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    
+    /* 3. Mengganti glow biru dengan bayangan hitam pekat (Drop Shadow) agar form terlihat timbul */
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.5), 
+                0px 0px 50px rgba(0, 140, 255, 0.1) !important;
+                
+    transition: all 0.3s ease-in-out;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
+#form:hover {
+    /* Saat di-hover, form sedikit terangkat dan bayangan hitamnya membesar */
+    transform: translateY(-2px);
+    box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.6), 
+                0px 0px 60px rgba(0, 140, 255, 0.2) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important; /* Garis tepi menyala biru tipis */
 }
 
-thead {
-    background: #202d43;
+/* MODIFIKASI UTAMA: Aturan dasar untuk semua kotak input */
+.form-control {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease-in-out !important;
+    caret-color: #3b82f6; /* Kursor ketik warna biru */
 }
 
-th,
-td {
-    padding: 15px 18px;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
-th {
-    color: #f8fafc;
-    font-size: 14px;
-    font-weight: 700;
+/* Efek saat kursor mendekati kotak input (Hover) secara individual */
+.form-control:hover {
+    background-color: rgba(255, 255, 255, 0.09) !important;
+    border-color: rgba(59, 130, 246, 0.6) !important;
 }
 
-td {
-    color: #dbe5f3;
-    font-size: 14px;
+/* Efek saat kotak input diklik/fokus aktif (Focus) */
+.form-control:focus {
+    background-color: rgba(15, 23, 42, 0.6) !important; /* Latar belakang menggelap transparan */
+    border-color: #3b82f6 !important; /* Border biru cerah tegas */
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.6) !important; /* Efek neon menyala merata di tengah */
+    outline: none !important;
 }
 
-tbody tr {
-    transition: background 0.2s ease;
-    animation: fadeUp 0.35s ease both;
+#hasil {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+} 
+
+#hasil:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-tbody tr:hover {
-    background: rgba(59, 130, 246, 0.08);
+#table {
+    margin-top: 40px !important; /* Menjauhkan posisi tabel dari kotak form di atasnya */
+    background-color: #0f172a !important; /* Diubah ke warna biru yang lebih gelap dari form (#1e293b) */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Garis tepi tipis agar kotak tabel terlihat tegas */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3); /* Mengubah glow biru menjadi shadow gelap agar tidak tabrakan dengan form */
+    transition: all 0.3s ease-in-out;
 }
 
-tbody tr:last-child td {
-    border-bottom: none;
+/* Efek saat tabel didekati kursor */
+#table:hover {
+    box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.5); /* Shadow menggelap untuk efek dimensi timbul */
+    border-color: rgba(59, 130, 246, 0.3); /* Garis tepi tipisnya menyala biru lembut */
 }
 
-/* =========================
-   8. GRADE BADGES
-========================= */
-.grade {
-    display: inline-block;
-    padding: 5px 11px;
-    border-radius: 7px;
-    font-weight: 750;
-    font-size: 12px;
+#tabelData tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
-.grade-a {
-    color: #6ee7b7;
-    background: rgba(16, 185, 129, 0.13);
+/* Efek hover interaktif saat baris tabel ditunjuk kursor */
+#tabelData tr:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    transition: background-color 0.2s ease;
 }
 
-.grade-b {
-    color: #93c5fd;
-    background: rgba(59, 130, 246, 0.13);
+#form:hover, #table:hover {
+    box-shadow: 0px 0px 50px 5px rgba(0, 140, 255, 0.4);
+} 
+
+#btnHitung {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.grade-c {
-    color: #fde68a;
-    background: rgba(245, 158, 11, 0.13);
+#btnHitung:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
 }
 
-.grade-d {
-    color: #fda4af;
-    background: rgba(244, 63, 94, 0.13);
+#btnHitung:focus {
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.8) !important;
+    outline: none;
 }
 
-/* =========================
-   9. ACTION BUTTONS
-========================= */
-.action-buttons {
-    display: flex;
-    gap: 8px;
+#btnHitung:active {
+    transform: scale(0.98);
 }
 
-.action-buttons button {
-    width: auto;
-    padding: 7px 11px;
-    font-size: 12px;
+.table th, .table td {
+    padding: 15px 20px;
+    vertical-align: middle;
+    color: #ffffff !important; /* Memaksa teks tetap berwarna putih tajam */
+    background-color: transparent !important; /* Menghilangkan warna putih bawaan Bootstrap */
 }
 
-.btn-edit {
-    background: #334155;
+/* Tambahkan ini untuk memastikan seluruh baris tabel berwarna gelap transparan */
+#tabelData tr {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.btn-delete {
-    background: #be123c;
+#btnHapus{
+    background: linear-gradient(135deg, #eb2525 0%, #d81d1d 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* =========================
-   10. ANIMATION
-========================= */
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-12px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+#btnHapus:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(235, 37, 37, 0.4);
 }
 
-@keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+#btnHapus:focus {
+    box-shadow: 0 0 12px rgba(235, 37, 37, 0.8) !important;
+    outline: none;
 }
 
-/* =========================
-   11. RESPONSIVE
-========================= */
-@media (max-width: 700px) {
-    body {
-        padding: 28px 14px;
-    }
-
-    form,
-    .form-card {
-        padding: 16px;
-    }
-
-    .input-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .input-grid .nama {
-        grid-column: span 2;
-    }
-
-    .input-grid .ulangan,
-    .input-grid .ujian {
-        grid-column: span 1;
-    }
-
-    th,
-    td {
-        padding: 12px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-    }
+#btnHapus:active {
+    transform: scale(0.98);
 }
