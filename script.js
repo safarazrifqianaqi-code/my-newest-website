@@ -1,270 +1,175 @@
-
-/* =========================
-   1. ELEMENTS
-========================= */
-const form = document.querySelector("#nilaiForm");
-const inputNama = document.querySelector("#nama");
-const inputUH1 = document.querySelector("#uh1");
-const inputUH2 = document.querySelector("#uh2");
-const inputUH3 = document.querySelector("#uh3");
-const inputUTS = document.querySelector("#uts");
-const inputUAS = document.querySelector("#uas");
-
-const tabel = document.querySelector("#dataNilai");
-const hasil = document.querySelector("#hasil");
-const tombolHitung = document.querySelector("#hitung");
-
-let dataSiswa = JSON.parse(
-    localStorage.getItem("rekapNilaiSiswa") || "[]"
-);
-
-let editId = null;
-
-/* =========================
-   2. VALIDASI DAN NILAI
-========================= */
-function ambilNilai() {
-    const nilai = [
-        inputUH1.value,
-        inputUH2.value,
-        inputUH3.value,
-        inputUTS.value,
-        inputUAS.value
-    ].map(Number);
-
-    if (
-        !inputNama.value.trim() ||
-        [inputUH1, inputUH2, inputUH3, inputUTS, inputUAS]
-            .some(input => input.value.trim() === "")
-    ) {
-        alert("Mohon isi nama dan semua nilai terlebih dahulu.");
-        return null;
-    }
-
-    if (nilai.some(n => !Number.isFinite(n) || n < 0 || n > 100)) {
-        alert("Nilai harus berupa angka antara 0 sampai 100.");
-        return null;
-    }
-
-    return {
-        nama: inputNama.value.trim(),
-        uh1: nilai[0],
-        uh2: nilai[1],
-        uh3: nilai[2],
-        uts: nilai[3],
-        uas: nilai[4]
-    };
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh; /* Diubah ke 100vh agar menutup penuh layar */
+  background: linear-gradient(to bottom, #0f172a 0%, #1e293b 100%);
+  background-attachment: fixed;
 }
 
-function hitungRataRata(siswa) {
-    return (
-        siswa.uh1 +
-        siswa.uh2 +
-        siswa.uh3 +
-        siswa.uts +
-        siswa.uas
-    ) / 5;
+footer {
+  background: transparent;
 }
 
-function tentukanGrade(rata) {
-    if (rata >= 90) return "A";
-    if (rata >= 80) return "B";
-    if (rata >= 70) return "C";
-    return "D";
+h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 40px;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-function simpanData() {
-    localStorage.setItem(
-        "rekapNilaiSiswa",
-        JSON.stringify(dataSiswa)
-    );
+#form {
+    /* 1. Mengubah warna form menjadi sedikit lebih terang dari background */
+    background-color: #1e2640 !important; 
+    
+    border-radius: 12px;
+    
+    /* 2. Menambahkan garis tepi (border) tipis semi-transparan sebagai pembatas tegas */
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    
+    /* 3. Mengganti glow biru dengan bayangan hitam pekat (Drop Shadow) agar form terlihat timbul */
+    box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.5), 
+                0px 0px 50px rgba(0, 140, 255, 0.1) !important;
+                
+    transition: all 0.3s ease-in-out;
 }
 
-/* =========================
-   3. TAMPILKAN HASIL
-========================= */
-function tampilkanHasil(siswa) {
-    const rata = hitungRataRata(siswa);
-    const grade = tentukanGrade(rata);
-
-    hasil.textContent =
-        `${siswa.nama} — Rata-rata: ${rata.toFixed(2)} | Grade: ${grade}`;
+#form:hover {
+    /* Saat di-hover, form sedikit terangkat dan bayangan hitamnya membesar */
+    transform: translateY(-2px);
+    box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.6), 
+                0px 0px 60px rgba(0, 140, 255, 0.2) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important; /* Garis tepi menyala biru tipis */
 }
 
-/* =========================
-   4. RENDER TABEL
-========================= */
-function renderTabel() {
-    tabel.replaceChildren();
-
-    if (dataSiswa.length === 0) {
-        const baris = document.createElement("tr");
-        const kolom = document.createElement("td");
-
-        kolom.colSpan = 4;
-        kolom.textContent = "Belum ada data siswa.";
-        kolom.style.textAlign = "center";
-        kolom.style.padding = "24px";
-
-        baris.append(kolom);
-        tabel.append(baris);
-        return;
-    }
-
-    dataSiswa.forEach(siswa => {
-        const baris = document.createElement("tr");
-        const rata = hitungRataRata(siswa);
-        const grade = tentukanGrade(rata);
-
-        const kolomNama = document.createElement("td");
-        kolomNama.textContent = siswa.nama;
-
-        const kolomRata = document.createElement("td");
-        kolomRata.textContent = rata.toFixed(2);
-
-        const kolomGrade = document.createElement("td");
-        const badge = document.createElement("span");
-
-        badge.className = "grade " +
-            (grade === "A" ? "grade-a" :
-             grade === "B" ? "grade-b" :
-             grade === "C" ? "grade-c" : "grade-d");
-
-        badge.textContent = grade;
-        kolomGrade.append(badge);
-
-        const kolomAksi = document.createElement("td");
-        const tombolEdit = document.createElement("button");
-        const tombolHapus = document.createElement("button");
-
-        const wadahAksi = document.createElement("div");
-        wadahAksi.className = "action-buttons";
-
-        tombolEdit.type = "button";
-        tombolEdit.textContent = "Edit";
-        tombolEdit.className = "btn-edit";
-        tombolEdit.addEventListener("click", () => editSiswa(siswa.id));
-
-        tombolHapus.type = "button";
-        tombolHapus.textContent = "Hapus";
-        tombolHapus.className = "btn-delete";
-        tombolHapus.addEventListener("click", () => hapusSiswa(siswa.id));
-
-        wadahAksi.append(tombolEdit, tombolHapus);
-        kolomAksi.append(wadahAksi);
-
-        baris.append(
-            kolomNama,
-            kolomRata,
-            kolomGrade,
-            kolomAksi
-        );
-
-        tabel.append(baris);
-    });
+/* MODIFIKASI UTAMA: Aturan dasar untuk semua kotak input */
+.form-control {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease-in-out !important;
+    caret-color: #3b82f6; /* Kursor ketik warna biru */
 }
 
-/* =========================
-   5. TAMBAH / EDIT SISWA
-========================= */
-form.addEventListener("submit", event => {
-    event.preventDefault();
-
-    const siswa = ambilNilai();
-
-    if (!siswa) return;
-
-    if (editId !== null) {
-        const index = dataSiswa.findIndex(
-            item => item.id === editId
-        );
-
-        if (index !== -1) {
-            dataSiswa[index] = {
-                ...dataSiswa[index],
-                ...siswa
-            };
-        }
-
-        editId = null;
-        tombolHitung.textContent = "Hitung";
-    } else {
-        dataSiswa.push({
-            id: crypto.randomUUID(),
-            ...siswa
-        });
-    }
-
-    tampilkanHasil(siswa);
-    simpanData();
-    renderTabel();
-    form.reset();
-});
-
-/* =========================
-   6. EDIT DATA
-========================= */
-function editSiswa(id) {
-    const siswa = dataSiswa.find(item => item.id === id);
-
-    if (!siswa) return;
-
-    inputNama.value = siswa.nama;
-    inputUH1.value = siswa.uh1;
-    inputUH2.value = siswa.uh2;
-    inputUH3.value = siswa.uh3;
-    inputUTS.value = siswa.uts;
-    inputUAS.value = siswa.uas;
-
-    editId = id;
-    tombolHitung.textContent = "Simpan Perubahan";
-
-    form.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-
-    inputNama.focus();
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
-/* =========================
-   7. HAPUS DATA
-========================= */
-function hapusSiswa(id) {
-    const siswa = dataSiswa.find(item => item.id === id);
-
-    if (!siswa) return;
-
-    if (!confirm(`Hapus data ${siswa.nama}?`)) return;
-
-    dataSiswa = dataSiswa.filter(item => item.id !== id);
-
-    if (editId === id) {
-        editId = null;
-        form.reset();
-        tombolHitung.textContent = "Hitung";
-    }
-
-    simpanData();
-    renderTabel();
-
-    hasil.textContent = dataSiswa.length
-        ? "Data berhasil diperbarui."
-        : "Belum ada data siswa.";
+/* Efek saat kursor mendekati kotak input (Hover) secara individual */
+.form-control:hover {
+    background-color: rgba(255, 255, 255, 0.09) !important;
+    border-color: rgba(59, 130, 246, 0.6) !important;
 }
 
-/* =========================
-   8. HITUNG TANPA MENYIMPAN
-========================= */
-tombolHitung.addEventListener("click", () => {
-    const siswa = ambilNilai();
+/* Efek saat kotak input diklik/fokus aktif (Focus) */
+.form-control:focus {
+    background-color: rgba(15, 23, 42, 0.6) !important; /* Latar belakang menggelap transparan */
+    border-color: #3b82f6 !important; /* Border biru cerah tegas */
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.6) !important; /* Efek neon menyala merata di tengah */
+    outline: none !important;
+}
 
-    if (siswa) {
-        tampilkanHasil(siswa);
-    }
-});
+#hasil {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+} 
 
-/* =========================
-   9. LOAD DATA AWAL
-========================= */
-renderTabel();
+#hasil:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+#table {
+    margin-top: 40px !important; /* Menjauhkan posisi tabel dari kotak form di atasnya */
+    background-color: #0f172a !important; /* Diubah ke warna biru yang lebih gelap dari form (#1e293b) */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Garis tepi tipis agar kotak tabel terlihat tegas */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3); /* Mengubah glow biru menjadi shadow gelap agar tidak tabrakan dengan form */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efek saat tabel didekati kursor */
+#table:hover {
+    box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.5); /* Shadow menggelap untuk efek dimensi timbul */
+    border-color: rgba(59, 130, 246, 0.3); /* Garis tepi tipisnya menyala biru lembut */
+}
+
+#tabelData tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Efek hover interaktif saat baris tabel ditunjuk kursor */
+#tabelData tr:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    transition: background-color 0.2s ease;
+}
+
+#form:hover, #table:hover {
+    box-shadow: 0px 0px 50px 5px rgba(0, 140, 255, 0.4);
+} 
+
+#btnHitung {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#btnHitung:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+}
+
+#btnHitung:focus {
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.8) !important;
+    outline: none;
+}
+
+#btnHitung:active {
+    transform: scale(0.98);
+}
+
+.table th, .table td {
+    padding: 15px 20px;
+    vertical-align: middle;
+    color: #ffffff !important; /* Memaksa teks tetap berwarna putih tajam */
+    background-color: transparent !important; /* Menghilangkan warna putih bawaan Bootstrap */
+}
+
+/* Tambahkan ini untuk memastikan seluruh baris tabel berwarna gelap transparan */
+#tabelData tr {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#btnHapus{
+    background: linear-gradient(135deg, #eb2525 0%, #d81d1d 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#btnHapus:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(235, 37, 37, 0.4);
+}
+
+#btnHapus:focus {
+    box-shadow: 0 0 12px rgba(235, 37, 37, 0.8) !important;
+    outline: none;
+}
+
+#btnHapus:active {
+    transform: scale(0.98);
+}
